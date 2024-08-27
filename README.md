@@ -60,10 +60,14 @@ requirements.txt: List of Python packages required.
 
 Ensure the model and vectorizer files are correctly placed in the project directory.
 
-
 The app supports .txt and .pdf file formats for resume uploads.
 
 For any issues or enhancements, please open an issue or submit a pull request!
+
+use app: 
+```bash
+https://resumescreeningapp-ivejn7hc8jkhu7z9ns4cqt.streamlit.app/
+```
 
 ## 📬 Contact
 For any questions or feedback, feel free to reach out:

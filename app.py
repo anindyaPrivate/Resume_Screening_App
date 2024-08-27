@@ -12,7 +12,6 @@ nltk.download('stopwords', quiet=True)
 clf = pickle.load(open("model.pkl", "rb"))
 tfidf = pickle.load(open("vectorizer.pkl", "rb"))
 
-
 # Function to clean resume content
 def clean_data(text):
     # Remove URLs, mentions, hashtags, special characters, and additional whitespace
@@ -23,7 +22,6 @@ def clean_data(text):
     text = re.sub(r'\s+', ' ', text).strip()
     return text
 
-
 # Function to extract text from PDF
 def extract_text_from_pdf(pdf_file):
     pdf_reader = PdfReader(pdf_file)
@@ -31,7 +29,6 @@ def extract_text_from_pdf(pdf_file):
     for page in pdf_reader.pages:
         text += page.extract_text()
     return text
-
 
 # Main app function
 def main():
@@ -46,7 +43,8 @@ def main():
     .title {
         text-align: center;
         color: #0066cc; /* Blue title */
-        font-size: 2em;
+        font-size: 2.5em; /* Increased font size */
+        font-weight: bold; /* Bold text */
         margin-bottom: 20px;
     }
     .header {
@@ -54,19 +52,24 @@ def main():
         border-bottom: 2px solid #0066cc;
         padding-bottom: 10px;
         margin-bottom: 20px;
+        font-size: 1.5em; /* Increased font size */
+        font-weight: bold; /* Bold text */
     }
     .box {
         background-color: #ffffff;
         border: 1px solid #dcdcdc;
         border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 15px;
+        padding: 20px; /* Increased padding */
+        margin-bottom: 20px; /* Increased margin */
+        font-size: 1.2em; /* Increased font size */
     }
     .text-area {
         border-radius: 8px;
         background-color: #f9f9f9;
         border: 1px solid #e0e0e0;
-        padding: 10px;
+        padding: 15px; /* Increased padding */
+        font-size: 1.2em; /* Increased font size */
+        color: #333333; /* Darker text color for better visibility */
     }
     </style>
     """, unsafe_allow_html=True)
@@ -126,13 +129,12 @@ def main():
                 resume_text = upload_file.read().decode("utf-8", errors="ignore")
 
             st.markdown('<div class="box"><h3>Original Resume Content</h3></div>', unsafe_allow_html=True)
-            st.text_area("Original Resume", value=resume_text, height=300, key="original_resume_cleaner")
+            st.text_area("Original Resume", value=resume_text, height=300, key="original_resume_cleaner", class_="text-area")
 
             cleaned_resume = clean_data(resume_text)
 
             st.markdown('<div class="box"><h3>Cleaned Resume Content</h3></div>', unsafe_allow_html=True)
-            st.text_area("Cleaned Resume", value=cleaned_resume, height=300, key="cleaned_resume_cleaner")
-
+            st.text_area("Cleaned Resume", value=cleaned_resume, height=300, key="cleaned_resume_cleaner", class_="text-area")
 
 if __name__ == '__main__':
     main()

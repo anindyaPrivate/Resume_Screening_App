@@ -4,10 +4,11 @@ import re
 import nltk
 from PyPDF2 import PdfReader
 
-nltk.download('punkt')
-nltk.download("stopwords")
+# Download necessary NLTK data
+nltk.download('punkt', quiet=True)
+nltk.download('stopwords', quiet=True)
 
-# Loading models
+# Load models
 clf = pickle.load(open("model.pkl", "rb"))
 tfidf = pickle.load(open("vectorizer.pkl", "rb"))
 
@@ -38,20 +39,21 @@ def main():
     st.markdown("""
     <style>
     .main {
-        background-color: #f0f2f6;
+        background-color: #e0f7e9; /* Light green background */
         padding: 20px;
         border-radius: 8px;
     }
     .title {
         text-align: center;
-        color: #007acc;
+        color: #0066cc; /* Blue title */
         font-size: 2em;
         margin-bottom: 20px;
     }
     .header {
-        color: #007acc;
-        border-bottom: 2px solid #007acc;
+        color: #0066cc; /* Blue header */
+        border-bottom: 2px solid #0066cc;
         padding-bottom: 10px;
+        margin-bottom: 20px;
     }
     .box {
         background-color: #ffffff;
@@ -66,19 +68,11 @@ def main():
         border: 1px solid #e0e0e0;
         padding: 10px;
     }
-    .sidebar {
-        background-color: #007acc;
-        color: white;
-    }
-    .sidebar .element-container {
-        color: white;
-    }
     </style>
     """, unsafe_allow_html=True)
 
     st.sidebar.title("Navigation")
-    st.sidebar.markdown('<div class="sidebar">Navigate to:</div>', unsafe_allow_html=True)
-    page = st.sidebar.radio("", ["Resume Screening", "Resume Cleaner"])
+    page = st.sidebar.radio("Go to", ["Resume Screening", "Resume Cleaner"])
 
     if page == "Resume Screening":
         st.markdown('<div class="title">Resume Screening App</div>', unsafe_allow_html=True)
@@ -95,17 +89,8 @@ def main():
             else:
                 resume_text = upload_file.read().decode("utf-8", errors="ignore")
 
-            # Display original resume content
-            # st.markdown('<div class="box"><h3>Original Resume Content</h3></div>', unsafe_allow_html=True)
-            # st.text_area("Original Resume", value=resume_text, height=300, key="original_resume")
-
             cleaned_resume = clean_data(resume_text)
 
-            # # Display cleaned resume content
-            # st.markdown('<div class="box"><h3>Cleaned Resume Content</h3></div>', unsafe_allow_html=True)
-            # st.text_area("Cleaned Resume", value=cleaned_resume, height=300, key="cleaned_resume")
-
-            # Dummy prediction for demonstration (replace with your model code)
             input_features = tfidf.transform([cleaned_resume])
             prediction_id = clf.predict(input_features)[0]
 
@@ -140,14 +125,11 @@ def main():
             else:
                 resume_text = upload_file.read().decode("utf-8", errors="ignore")
 
-            # Display original resume content
             st.markdown('<div class="box"><h3>Original Resume Content</h3></div>', unsafe_allow_html=True)
             st.text_area("Original Resume", value=resume_text, height=300, key="original_resume_cleaner")
 
-            # Clean the resume content
             cleaned_resume = clean_data(resume_text)
 
-            # Display cleaned resume content
             st.markdown('<div class="box"><h3>Cleaned Resume Content</h3></div>', unsafe_allow_html=True)
             st.text_area("Cleaned Resume", value=cleaned_resume, height=300, key="cleaned_resume_cleaner")
 

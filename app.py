@@ -4,11 +4,10 @@ import re
 import nltk
 from PyPDF2 import PdfReader
 
-# Download necessary NLTK data
-nltk.download('punkt', quiet=True)
-nltk.download('stopwords', quiet=True)
+nltk.download('punkt')
+nltk.download("stopwords")
 
-# Load models
+# Loading models
 clf = pickle.load(open("model.pkl", "rb"))
 tfidf = pickle.load(open("vectorizer.pkl", "rb"))
 
@@ -32,56 +31,14 @@ def extract_text_from_pdf(pdf_file):
 
 # Main app function
 def main():
-    # Add custom CSS for styling
-    st.markdown("""
-    <style>
-    .main {
-        background-color: #e0f7e9; /* Light green background */
-        padding: 20px;
-        border-radius: 8px;
-    }
-    .title {
-        text-align: center;
-        color: #0066cc; /* Blue title */
-        font-size: 2.5em; /* Increased font size */
-        font-weight: bold; /* Bold text */
-        margin-bottom: 20px;
-    }
-    .header {
-        color: #0066cc; /* Blue header */
-        border-bottom: 2px solid #0066cc;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        font-size: 1.5em; /* Increased font size */
-        font-weight: bold; /* Bold text */
-    }
-    .box {
-        background-color: #ffffff;
-        border: 1px solid #dcdcdc;
-        border-radius: 8px;
-        padding: 20px; /* Increased padding */
-        margin-bottom: 20px; /* Increased margin */
-        font-size: 1.2em; /* Increased font size */
-    }
-    .text-area {
-        border-radius: 8px;
-        background-color: #f9f9f9;
-        border: 1px solid #e0e0e0;
-        padding: 15px; /* Increased padding */
-        font-size: 1.2em; /* Increased font size */
-        color: #333333; /* Darker text color for better visibility */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
     st.sidebar.title("Navigation")
     page = st.sidebar.radio("Go to", ["Resume Screening", "Resume Cleaner"])
 
     if page == "Resume Screening":
-        st.markdown('<div class="title">Resume Screening App</div>', unsafe_allow_html=True)
+        st.title("Resume Screening App")
         st.write("Upload your resume to predict the job category it belongs to.")
 
-        st.markdown('<div class="header">Upload Your Resume</div>', unsafe_allow_html=True)
+        st.header("Upload Your Resume")
         upload_file = st.file_uploader("Choose a file in .txt or .pdf format", type=["txt", "pdf"])
 
         if upload_file is not None:
@@ -92,7 +49,12 @@ def main():
             else:
                 resume_text = upload_file.read().decode("utf-8", errors="ignore")
 
+            # st.subheader("Original Resume Content")
+            # st.write(resume_text)
+
             cleaned_resume = clean_data(resume_text)
+            # st.subheader("Cleaned Resume Content")
+            # st.write(cleaned_resume)
 
             input_features = tfidf.transform([cleaned_resume])
             prediction_id = clf.predict(input_features)[0]
@@ -110,14 +72,14 @@ def main():
             }
             category_name = category_mapping.get(prediction_id, "Unknown")
 
-            st.markdown('<div class="box"><h3>Prediction Result</h3></div>', unsafe_allow_html=True)
+            st.subheader("Prediction Result")
             st.success(f"The resume most likely belongs to the category: **{category_name}**")
 
     elif page == "Resume Cleaner":
-        st.markdown('<div class="title">Resume Cleaner</div>', unsafe_allow_html=True)
+        st.title("Resume Cleaner")
         st.write("Upload your resume to view and clean the content.")
 
-        st.markdown('<div class="header">Upload Your Resume</div>', unsafe_allow_html=True)
+        st.header("Upload Your Resume")
         upload_file = st.file_uploader("Choose a file in .txt or .pdf format", type=["txt", "pdf"])
 
         if upload_file is not None:
@@ -128,13 +90,12 @@ def main():
             else:
                 resume_text = upload_file.read().decode("utf-8", errors="ignore")
 
-            st.markdown('<div class="box"><h3>Original Resume Content</h3></div>', unsafe_allow_html=True)
-            st.text_area("Original Resume", value=resume_text, height=300, key="original_resume_cleaner", class_="text-area")
+            st.subheader("Original Resume Content")
+            st.text_area("Original Resume", value=resume_text, height=300)
 
             cleaned_resume = clean_data(resume_text)
-
-            st.markdown('<div class="box"><h3>Cleaned Resume Content</h3></div>', unsafe_allow_html=True)
-            st.text_area("Cleaned Resume", value=cleaned_resume, height=300, key="cleaned_resume_cleaner", class_="text-area")
+            st.subheader("Cleaned Resume Content")
+            st.text_area("Cleaned Resume", value=cleaned_resume, height=300)
 
 if __name__ == '__main__':
     main()

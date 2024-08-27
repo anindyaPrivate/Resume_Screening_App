@@ -3,7 +3,9 @@ Welcome to the Resume Screening App! This Streamlit application helps you analyz
 
 ## 🚀 Features
 Resume Upload: Upload your resume in .txt or .pdf format.
+
 Resume Screening: Predict the job category of the resume using a machine learning model.
+
 Resume Cleaner: View and clean the resume content for better processing.
 ## 🛠️ Installation
 To get started, clone this repository and install the required packages:

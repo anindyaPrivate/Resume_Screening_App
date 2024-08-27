@@ -13,7 +13,7 @@ To get started, clone this repository and install the required packages:
 git clone https://github.com/anindyaPrivate/Resume_Screening_App.git
 cd resume-screening-app
 ~~~
-📋 Usage
+## 📋 Usage
 1. Start the Streamlit App
 Run the following command to start the app:
 ~~~bash
